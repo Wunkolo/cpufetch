@@ -110,6 +110,8 @@ static const ISA isas_uarch[] = {
   [UARCH_AVALANCHE]    = ISA_ARMv8_6_A, // https://github.com/llvm/llvm-project/blob/main/llvm/unittests/TargetParser/TargetParserTest.cpp
   [UARCH_SAWTOOTH]     = ISA_ARMv8_6_A, // https://github.com/llvm/llvm-project/blob/main/llvm/unittests/TargetParser/TargetParserTest.cpp
   [UARCH_EVEREST]      = ISA_ARMv8_6_A, // https://github.com/llvm/llvm-project/blob/main/llvm/unittests/TargetParser/TargetParserTest.cpp
+  [UARCH_T8132_ECORE]     = ISA_ARMv9_2_A,
+  [UARCH_T8132_PCORE]     = ISA_ARMv9_2_A,
   [UARCH_PJ4]          = ISA_ARMv7_A,
   [UARCH_XIAOMI]       = ISA_ARMv8_A,
 };
@@ -282,6 +284,8 @@ struct uarch* get_uarch_from_midr(uint32_t midr, struct cpuInfo* cpu) {
   CHECK_UARCH(arch, cpu, 'a', 0x031, NA, NA, "Avalanche",             UARCH_AVALANCHE,    CPU_VENDOR_APPLE)
   CHECK_UARCH(arch, cpu, 'a', 0x048, NA, NA, "Sawtooth",              UARCH_SAWTOOTH,     CPU_VENDOR_APPLE)
   CHECK_UARCH(arch, cpu, 'a', 0x049, NA, NA, "Everest",               UARCH_EVEREST,      CPU_VENDOR_APPLE)
+  CHECK_UARCH(arch, cpu, 'a', 0x052, NA, NA, "T8132 E-Core",          UARCH_T8132_ECORE,  CPU_VENDOR_APPLE)
+  CHECK_UARCH(arch, cpu, 'a', 0x053, NA, NA, "T8132 P-Core",          UARCH_T8132_PCORE,  CPU_VENDOR_APPLE)
 
   CHECK_UARCH(arch, cpu, 'V', 0x581, NA, NA, "PJ4",                   UARCH_PJ4,          CPU_VENDOR_MARVELL)
   CHECK_UARCH(arch, cpu, 'V', 0x584, NA, NA, "PJ4B-MP",               UARCH_PJ4,          CPU_VENDOR_MARVELL)

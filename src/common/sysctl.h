@@ -11,6 +11,8 @@
 // https://github.com/AsahiLinux/m1n1/blob/main/src/chickens.c
 #define MIDR_APPLE_M3_SAWTOOTH  0x610F0480
 #define MIDR_APPLE_M3_EVEREST   0x610F0490
+#define MIDR_APPLE_M4_ECORE     0x610F0520
+#define MIDR_APPLE_M4_PCORE     0x610F0530
 
 // M1 / A14
 #ifndef CPUFAMILY_ARM_FIRESTORM_ICESTORM
@@ -29,6 +31,9 @@
 #define CPUFAMILY_ARM_EVEREST_SAWTOOTH_2   0xFA33415E
 #define CPUFAMILY_ARM_EVEREST_SAWTOOTH_PRO 0x5F4DEA93
 #define CPUFAMILY_ARM_EVEREST_SAWTOOTH_MAX 0x72015832
+// M4 / A18
+#define CPUFAMILY_ARM_DONAN       0x6F5129AC
+#define CPUFAMILY_ARM_BRAVIA_PRO_MAX  0x17D5B93A
 
 // For detecting different M1 types
 // NOTE: Could also be achieved detecting different

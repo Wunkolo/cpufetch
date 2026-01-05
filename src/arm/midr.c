@@ -478,6 +478,41 @@ void fill_cpu_info_everest_sawtooth(struct cpuInfo* cpu, uint32_t pcores, uint32
   eve->next_cpu = NULL;
 }
 
+void fill_cpu_info_donan(struct cpuInfo* cpu, uint32_t pcores, uint32_t ecores) {
+  // 1. Fill Donan E-Core
+  struct cpuInfo* ecore = cpu;
+
+  ecore->midr = MIDR_APPLE_M4_ECORE;
+  ecore->arch = get_uarch_from_midr(ecore->midr, ecore);
+  ecore->cach = get_cache_info(ecore);
+  ecore->feat = get_features_info();
+  ecore->topo = malloc(sizeof(struct topology));
+  ecore->topo->cach = ecore->cach;
+  ecore->topo->total_cores = ecores;
+  ecore->freq = malloc(sizeof(struct frequency));
+  ecore->freq->base = UNKNOWN_DATA;
+  ecore->freq->max = 2592;
+  ecore->hv = malloc(sizeof(struct hypervisor));
+  ecore->hv->present = false;
+  ecore->next_cpu = malloc(sizeof(struct cpuInfo));
+
+  // 2. Fill Donan P-Core
+  struct cpuInfo* pcore = ecore->next_cpu;
+  pcore->midr = MIDR_APPLE_M4_PCORE;
+  pcore->arch = get_uarch_from_midr(pcore->midr, pcore);
+  pcore->cach = get_cache_info(pcore);
+  pcore->feat = get_features_info();
+  pcore->topo = malloc(sizeof(struct topology));
+  pcore->topo->cach = pcore->cach;
+  pcore->topo->total_cores = pcores;
+  pcore->freq = malloc(sizeof(struct frequency));
+  pcore->freq->base = UNKNOWN_DATA;
+  pcore->freq->max = 4512;
+  pcore->hv = malloc(sizeof(struct hypervisor));
+  pcore->hv->present = false;
+  pcore->next_cpu = NULL;
+}
+
 struct cpuInfo* get_cpu_info_mach(struct cpuInfo* cpu) {
   // https://developer.apple.com/documentation/kernel/1387446-sysctlbyname/determining_system_capabilities
   uint32_t nperflevels = get_sys_info_by_name("hw.nperflevels");
@@ -516,6 +551,12 @@ struct cpuInfo* get_cpu_info_mach(struct cpuInfo* cpu) {
           cpu_family == CPUFAMILY_ARM_EVEREST_SAWTOOTH_PRO ||
           cpu_family == CPUFAMILY_ARM_EVEREST_SAWTOOTH_MAX) {
     fill_cpu_info_everest_sawtooth(cpu, pcores, ecores);
+    cpu->soc = get_soc(cpu);
+    cpu->peak_performance = get_peak_performance(cpu);
+  }
+  else if(cpu_family == CPUFAMILY_ARM_DONAN ||
+          cpu_family == CPUFAMILY_ARM_BRAVIA_PRO_MAX) {
+    fill_cpu_info_donan(cpu, pcores, ecores);
     cpu->soc = get_soc(cpu);
     cpu->peak_performance = get_peak_performance(cpu);
   }

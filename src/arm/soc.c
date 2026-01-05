@@ -1016,6 +1016,9 @@ struct system_on_chip* guess_soc_from_devtree(struct system_on_chip* soc) {
   DT_EQ(dt, len, soc, "apple,t6030", "M3 Pro",   SOC_APPLE_M3_PRO,   3)
   DT_EQ(dt, len, soc, "apple,t6031", "M3 Max",   SOC_APPLE_M3_MAX,   3)
   DT_EQ(dt, len, soc, "apple,t6034", "M3 Max",   SOC_APPLE_M3_MAX,   3)
+  DT_EQ(dt, len, soc, "apple,t8132", "M4",       SOC_APPLE_M4,       3)
+  DT_EQ(dt, len, soc, "apple,t6040", "M4 Pro",   SOC_APPLE_M4_PRO,   3)
+  DT_EQ(dt, len, soc, "apple,t6041", "M4 Max",   SOC_APPLE_M4_MAX,   3)
   // NVIDIA
   // https://elixir.bootlin.com/linux/v6.10.6/source/arch/arm64/boot/dts/nvidia
   // https://elixir.bootlin.com/linux/v6.10.6/source/arch/arm/boot/dts/nvidia
@@ -1285,6 +1288,20 @@ struct system_on_chip* guess_soc_apple(struct system_on_chip* soc) {
     }
     else if(cpu_family == CPUFAMILY_ARM_EVEREST_SAWTOOTH_MAX) {
       fill_soc(soc, "M3 Max", SOC_APPLE_M3_MAX, 3);
+    }
+    else {
+      printBugCheckRelease("Found invalid cpu_family: 0x%.8X", cpu_family);
+      soc->vendor = SOC_VENDOR_UNKNOWN;
+    }
+  }
+  else if(cpu_family == CPUFAMILY_ARM_DONAN ||
+          cpu_family == CPUFAMILY_ARM_BRAVIA_PRO_MAX) {
+    // Check M4 version
+    if(cpu_family == CPUFAMILY_ARM_DONAN) {
+      fill_soc(soc, "M4", SOC_APPLE_M4, 3);
+    }
+    else if(cpu_family == CPUFAMILY_ARM_BRAVIA_PRO_MAX) {
+      fill_soc(soc, "M4 Pro/Max", SOC_APPLE_M4_PRO, 3);
     }
     else {
       printBugCheckRelease("Found invalid cpu_family: 0x%.8X", cpu_family);
